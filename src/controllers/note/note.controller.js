@@ -1,4 +1,4 @@
-const noteService = require("../services/note.service");
+const noteService = require("../../services/note.service");
 
 class NoteController {
     async create(req, res) {
