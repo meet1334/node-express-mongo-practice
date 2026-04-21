@@ -1,4 +1,4 @@
-const Note = require("../models/note.model");
+import Note from "../models/note.model";
 
 class NoteService {
 
@@ -10,18 +10,18 @@ class NoteService {
         return Note.find().populate("createdBy");
     }
 
-    async findById(id){
+    async findById(id:string){
         return Note.findById(id);
     }
 
 
-    async update(id, data){
+    async update(id:string, data){
         return Note.findByIdAndUpdate(id, data, {new: true});
     }
 
-    async delete(id){
+    async delete(id:string){
         return Note.findByIdAndDelete(id);
     }
 }
 
-module.exports = new NoteService();
+export default new NoteService();

@@ -1,4 +1,4 @@
-const User = require("../models/user.model");
+import User from "../models/user.model";
 
 class UserService {
   async create(data) {
@@ -9,17 +9,17 @@ class UserService {
     return User.find();
   }
 
-  async findById(id) {
+  async findById(id:string) {
     return User.findById(id);
   }
 
-  async update(id, data) {
+  async update(id:string, data) {
     return User.findByIdAndUpdate(id, data, { new: true });
   }
 
-  async delete(id) {
+  async delete(id:string) {
     return User.findByIdAndDelete(id);
   }
 }
 
-module.exports = new UserService();
+export default new UserService();

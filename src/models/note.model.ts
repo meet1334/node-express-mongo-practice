@@ -1,6 +1,13 @@
-const mongoose = require("mongoose");
+import { Document, model, Schema,Types } from "mongoose";
 
-const NoteSchema = new mongoose.Schema(
+export interface NoteDocument extends Document {
+  title: string;
+  content: string;
+  createdBy: Types.ObjectId;
+  createdAt?: Date;
+}
+
+const noteSchema = new Schema(
     {
         title: {
             type: String,
@@ -11,7 +18,7 @@ const NoteSchema = new mongoose.Schema(
             required: true,
         },
         createdBy: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
@@ -23,4 +30,4 @@ const NoteSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-module.exports = mongoose.model("Note", NoteSchema);
+export const Note = model<NoteDocument>('Note', noteSchema);

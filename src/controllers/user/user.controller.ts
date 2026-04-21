@@ -1,30 +1,31 @@
-const userService = require("../../services/user.service");
+import { Request, Response } from "express";
+import userService from "../../services/user.service";
 
 class UserController {
-  async create(req, res) {
+  async create(req:Request, res:Response) {
     const user = await userService.create(req.body);
     res.json(user);
   }
 
-  async getAll(req, res) {
+  async getAll(req:Request, res:Response) {
     const users = await userService.findAll();
     res.json(users);
   }
 
-  async getOne(req, res) {
+  async getOne(req:Request, res:Response) {
     const user = await userService.findById(req.params.id);
     res.json(user);
   }
 
-  async update(req, res) {
+  async update(req:Request, res:Response) {
     const user = await userService.update(req.params.id, req.body);
     res.json(user);
   }
 
-  async delete(req, res) {
+  async delete(req:Request, res:Response) {
     const user = await userService.delete(req.params.id);
     res.json(user);
   }
 }
 
-module.exports = new UserController();
+export default new UserController();

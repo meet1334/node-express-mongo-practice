@@ -1,30 +1,31 @@
-const noteService = require("../../services/note.service");
+import { Request, Response } from "express";
+import noteService from "../../services/note.service";
 
 class NoteController {
-    async create(req, res) {
+    async create(req:Request, res:Response) {
         const note = await noteService.create(req.body);
         res.json(note);
     }
 
-    async getAll(req, res) {
+    async getAll(req:Request, res:Response) {
         const notes = await noteService.findAll();
         res.json(notes);
     }       
 
-    async getOne(req, res) {
+    async getOne(req:Request, res:Response) {
         const note = await noteService.findById(req.params.id);
         res.json(note);
     }
 
-    async update(req, res) {
+    async update(req:Request, res:Response) {
         const note = await noteService.update(req.params.id, req.body);
         res.json(note);
     }
 
-    async delete(req, res) {
+    async delete(req:Request, res:Response) {
         const note = await noteService.delete(req.params.id);
         res.json(note);
     }
 }
 
-module.exports = new NoteController();
+export default new NoteController();
