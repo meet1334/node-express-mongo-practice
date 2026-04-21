@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { DATABASE_URL } = require("../config");
+import mongoose from "mongoose";
+import { DATABASE_URL } from "../config";
 
 const dbConnection = async () => {
   // check if connection is already connected then return
@@ -30,10 +30,10 @@ const dbConnection = async () => {
     mongoose.connection.on("disconnected", () => {
       console.log("Mongoose default connection disconnected");
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
     process.exit(1);
   }
 };
 
-module.exports = dbConnection;
+export default dbConnection;
