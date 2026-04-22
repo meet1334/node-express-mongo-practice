@@ -1,26 +1,25 @@
-import { User } from "../models/user.model";
+import { User } from '../models/user.model';
 
 export class UserRepository {
-  async create(data: any) {
+  create = async (data: any) => {
     return User.create(data);
-  }
+  };
 
-  async find() {
-    return User.find();
-  }
-  async findById(id: string) {
-    return User.findById(id);
-  }
+  findAll = async () => {
+    return User.find().select('-password -__v').sort({ createdAt: -1 });
+  };
+  findById = async (id: string) => {
+    return User.findById(id).select('-password -__v');
+  };
 
-  async update(id: string, data: any) {
+  updateById = async (id: string, data: any) => {
     return User.findByIdAndUpdate(id, data, {
       new: true,
       runValidators: true,
-    });
-  }
+    }).select('-password -__v');
+  };
 
-  async delete(id: string) {
+  deleteById = async (id: string) => {
     return User.findByIdAndDelete(id);
-  }
-  
+  };
 }

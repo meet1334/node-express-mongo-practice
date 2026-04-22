@@ -3,23 +3,27 @@ import { NoteRepository } from '../repositories/note.repository';
 export class NoteService {
   private readonly noteServicerepository = new NoteRepository();
 
-  async create(data: any) {
+  createNote = async (data: any) => {
     return this.noteServicerepository.create(data);
-  }
+  };
 
-  async findAll() {
-    return this.noteServicerepository.find();
-  }
+  getAllNotes = async () => {
+    return this.noteServicerepository.getAll();
+  };
 
-  async findById(id: string) {
+  getNoteById = async (id: string) => {
     return this.noteServicerepository.findById(id);
-  }
+  };
 
-  async update(id: string, data: any) {
-    return this.noteServicerepository.update(id, data);
-  }
+  updateNote = async (id: string, data: any) => {
+    return this.noteServicerepository.updateById(id, data);
+  };
 
-  async delete(id: string) {
-    return this.noteServicerepository.delete(id);
-  }
+  deleteNoteById = async (id: string) => {
+    return this.noteServicerepository.deleteById(id);
+  };
+
+  deleteAllNote = async (condition: any) => {
+    return this.noteServicerepository.deleteMany(condition);
+  };
 }

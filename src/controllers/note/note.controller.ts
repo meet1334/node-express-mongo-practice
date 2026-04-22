@@ -9,7 +9,7 @@ export class NoteController {
 
   async create(req: Request, res: Response) {
     try {
-      const note = await this.noteService.create(req.body);
+      const note = await this.noteService.createNote(req.body);
       return res.status(HttpCode.CREATED).json({ message: successMessage.NOTE_CREATE_SUCCESS, note });
     } catch (error) {
       return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
@@ -18,7 +18,7 @@ export class NoteController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const notes = await this.noteService.findAll();
+      const notes = await this.noteService.getAllNotes();
       res.status(HttpCode.OK).json({ message: successMessage.NOTE_DISPLAY_SUCCESS, notes });
     } catch (error) {
       return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
@@ -27,7 +27,7 @@ export class NoteController {
 
   async getOne(req: Request, res: Response) {
     try {
-      const note = await this.noteService.findById(req.params.id as string);
+      const note = await this.noteService.getNoteById(req.params.id as string);
       res.status(HttpCode.OK).json({ message: successMessage.NOTE_DISPLAY_SUCCESS, note });
     } catch (error) {
       return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
@@ -36,7 +36,7 @@ export class NoteController {
 
   async update(req: Request, res: Response) {
     try {
-      const note = await this.noteService.update(req.params.id as string, req.body);
+      const note = await this.noteService.updateNote(req.params.id as string, req.body);
       res.status(HttpCode.OK).json({ message: successMessage.NOTE_UPDATE_SUCCESS, note });
     } catch (error) {
       return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
@@ -45,7 +45,7 @@ export class NoteController {
 
   async delete(req: Request, res: Response) {
     try {
-      const note = await this.noteService.delete(req.params.id as string);
+      const note = await this.noteService.deleteNoteById(req.params.id as string);
       res.status(HttpCode.OK).json({ message: successMessage.NOTE_DELETE_SUCCESS, note });
     } catch (error) {
       return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
