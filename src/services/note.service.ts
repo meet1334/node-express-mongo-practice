@@ -1,27 +1,25 @@
-import Note from "../models/note.model";
+import noteRepository from "../repositories/note.repository";
 
 class NoteService {
+  async create(data: any) {
+    return noteRepository.create(data);
+  }
 
-    async create(data){
-        return Note.create(data);
-    }
+  async findAll() {
+    return noteRepository.find();
+  }
 
-    async findAll(){
-        return Note.find().populate("createdBy");
-    }
+  async findById(id: string) {
+    return noteRepository.findById(id);
+  }
 
-    async findById(id:string){
-        return Note.findById(id);
-    }
+  async update(id: string, data: any) {
+    return noteRepository.update(id, data);
+  }
 
-
-    async update(id:string, data){
-        return Note.findByIdAndUpdate(id, data, {new: true});
-    }
-
-    async delete(id:string){
-        return Note.findByIdAndDelete(id);
-    }
+  async delete(id: string) {
+    return noteRepository.delete(id);
+  }
 }
 
 export default new NoteService();

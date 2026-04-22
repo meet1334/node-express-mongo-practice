@@ -13,17 +13,17 @@ class UserController {
   }
 
   async getOne(req:Request, res:Response) {
-    const user = await userService.findById(req.params.id);
+    const user = await userService.findById(req.params.id as string);
     res.json(user);
   }
 
   async update(req:Request, res:Response) {
-    const user = await userService.update(req.params.id, req.body);
+    const user = await userService.update(req.params.id as string, req.body);
     res.json(user);
   }
 
   async delete(req:Request, res:Response) {
-    const user = await userService.delete(req.params.id);
+    const user = await userService.delete(req.params.id as string);
     res.json(user);
   }
 }

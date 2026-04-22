@@ -1,4 +1,4 @@
-import { config } from 'dotenv';
+ import { config } from 'dotenv';
 config();
 // config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 

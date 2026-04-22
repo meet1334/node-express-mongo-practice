@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
-import User from "../models/user.model";
+import { User } from "../models/user.model";
 import HashUtil from "../utils/hashUtil";
 import JWTUtil from "../utils/jwtUtil";
 import { successMessage } from "../constants/success.constants";
@@ -19,7 +19,7 @@ router.post("/signup", async (req:Request, res:Response) => {
     //   username,
     // });
 
-    const user = await User.create({
+    const user = await User.create({ 
       email,
       password: hashedPassword,
       first_name,

@@ -1,4 +1,4 @@
-import  { Document, model, Schema } from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
 export interface UserDocument extends Document {
   first_name: string;
@@ -9,7 +9,6 @@ export interface UserDocument extends Document {
   age?: number;
   createdAt?: Date;
 }
-
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -44,4 +43,4 @@ const userSchema = new Schema<UserDocument>(
   { timestamps: true },
 );
 
-export const User = model<UserDocument>('User', userSchema);
+export const User = model<UserDocument>("User", userSchema);

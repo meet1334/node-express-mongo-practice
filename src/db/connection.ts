@@ -16,11 +16,11 @@ const dbConnection = async () => {
         autoCreate: true,
       })
       .then(() => {
-        console.log("database connected");
+        console.log("Database connected successfully");
       });
     mongoose.connection.on("connected", () => {
       //console.log('Mongoose default connection open to ' + databaseURL)
-      console.log("db connected");
+      console.log("Database connected successfully");
     });
 
     mongoose.connection.on("error", (err) => {

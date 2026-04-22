@@ -1,24 +1,24 @@
-import User from "../models/user.model";
+import UserRepository from "../repositories/user.repository";
 
 class UserService {
-  async create(data) {
-    return User.create(data);
+  async create(data:any) {
+    return UserRepository.create(data);
   }
 
   async findAll() {
-    return User.find();
+    return UserRepository.find();
   }
 
   async findById(id:string) {
-    return User.findById(id);
+    return UserRepository.findById(id);
   }
 
-  async update(id:string, data) {
-    return User.findByIdAndUpdate(id, data, { new: true });
+  async update(id:string, data:any) {
+    return UserRepository.update(id, data);
   }
 
   async delete(id:string) {
-    return User.findByIdAndDelete(id);
+    return UserRepository.delete(id);
   }
 }
 

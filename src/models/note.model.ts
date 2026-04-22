@@ -7,7 +7,7 @@ export interface NoteDocument extends Document {
   createdAt?: Date;
 }
 
-const noteSchema = new Schema(
+const noteSchema = new Schema<NoteDocument>(
     {
         title: {
             type: String,

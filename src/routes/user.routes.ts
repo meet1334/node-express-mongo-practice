@@ -1,12 +1,17 @@
 import express from "express";
 const router = express.Router();
-import userController from "../controllers/user.controller";
-import { authenticate } from "../../middleware/auth";
+import userController from "../controllers/user/user.controller";
+import middleware from "../middlewares/auth.middleware";
 
-router.post("/", authenticate, userController.create.bind(userController));
-router.get("/", authenticate, userController.getAll.bind(userController));
-router.get("/:id", authenticate, userController.getOne.bind(userController));
-router.put("/:id", authenticate, userController.update.bind(userController));
-router.delete("/:id", authenticate, userController.delete.bind(userController));
+// apply middleware to all routes below
+// router.use(middleware.authenticate.bind(middleware));
+
+const auth = middleware.authenticate.bind(middleware);
+
+router.post("/", auth, userController.create.bind(userController));
+router.get("/", auth, userController.getAll.bind(userController));
+router.get("/:id", auth, userController.getOne.bind(userController));
+router.put("/:id", auth, userController.update.bind(userController));
+router.delete("/:id", auth, userController.delete.bind(userController));
 
 export default router;
