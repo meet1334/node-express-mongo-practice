@@ -1,25 +1,25 @@
-import noteRepository from "../repositories/note.repository";
+import { NoteRepository } from '../repositories/note.repository';
 
-class NoteService {
+export class NoteService {
+  private readonly noteServicerepository = new NoteRepository();
+
   async create(data: any) {
-    return noteRepository.create(data);
+    return this.noteServicerepository.create(data);
   }
 
   async findAll() {
-    return noteRepository.find();
+    return this.noteServicerepository.find();
   }
 
   async findById(id: string) {
-    return noteRepository.findById(id);
+    return this.noteServicerepository.findById(id);
   }
 
   async update(id: string, data: any) {
-    return noteRepository.update(id, data);
+    return this.noteServicerepository.update(id, data);
   }
 
   async delete(id: string) {
-    return noteRepository.delete(id);
+    return this.noteServicerepository.delete(id);
   }
 }
-
-export default new NoteService();

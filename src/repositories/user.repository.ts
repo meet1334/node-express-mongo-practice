@@ -1,6 +1,6 @@
 import { User } from "../models/user.model";
 
-class UserRepository {
+export class UserRepository {
   async create(data: any) {
     return User.create(data);
   }
@@ -22,6 +22,5 @@ class UserRepository {
   async delete(id: string) {
     return User.findByIdAndDelete(id);
   }
+  
 }
-
-export default new UserRepository();

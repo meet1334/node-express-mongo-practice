@@ -1,32 +1,54 @@
 import { Request, Response } from 'express';
-import noteService from '../../services/note.service';
 import { successMessage } from '../../constants/success.constants';
+import { HttpCode } from '../../exceptions/AppError';
+import { errorMessage } from '../../constants/error.constants';
+import { NoteService } from '../../services/note.service';
 
-class NoteController {
+export class NoteController {
+  private readonly noteService = new NoteService();
+
   async create(req: Request, res: Response) {
-    const note = await noteService.create(req.body);
-    res.status(201).json({ message: successMessage.NOTE_CREATE_SUCCESS, note });
+    try {
+      const note = await this.noteService.create(req.body);
+      return res.status(HttpCode.CREATED).json({ message: successMessage.NOTE_CREATE_SUCCESS, note });
+    } catch (error) {
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
+    }
   }
 
   async getAll(req: Request, res: Response) {
-    const notes = await noteService.findAll();
-    res.status(200).json({ message: successMessage.NOTE_DISPLAY_SUCCESS, notes });
+    try {
+      const notes = await this.noteService.findAll();
+      res.status(HttpCode.OK).json({ message: successMessage.NOTE_DISPLAY_SUCCESS, notes });
+    } catch (error) {
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
+    }
   }
 
   async getOne(req: Request, res: Response) {
-    const note = await noteService.findById(req.params.id as string);
-    res.status(200).json({ message: successMessage.NOTE_DISPLAY_SUCCESS, note });
+    try {
+      const note = await this.noteService.findById(req.params.id as string);
+      res.status(HttpCode.OK).json({ message: successMessage.NOTE_DISPLAY_SUCCESS, note });
+    } catch (error) {
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
+    }
   }
 
   async update(req: Request, res: Response) {
-    const note = await noteService.update(req.params.id as string, req.body);
-    res.status(200).json({ message: successMessage.NOTE_UPDATE_SUCCESS, note });
+    try {
+      const note = await this.noteService.update(req.params.id as string, req.body);
+      res.status(HttpCode.OK).json({ message: successMessage.NOTE_UPDATE_SUCCESS, note });
+    } catch (error) {
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
+    }
   }
 
   async delete(req: Request, res: Response) {
-    const note = await noteService.delete(req.params.id as string);
-    res.status(200).json({ message: successMessage.NOTE_DELETE_SUCCESS, note });
+    try {
+      const note = await this.noteService.delete(req.params.id as string);
+      res.status(HttpCode.OK).json({ message: successMessage.NOTE_DELETE_SUCCESS, note });
+    } catch (error) {
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
+    }
   }
 }
-
-export default new NoteController();

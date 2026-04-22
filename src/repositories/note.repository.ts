@@ -1,16 +1,16 @@
-import { Note } from "../models/note.model";
+import { Note } from '../models/note.model';
 
-class NoteRepository {
+export class NoteRepository {
   async create(data: any) {
     return Note.create(data);
   }
 
   async find() {
-    return Note.find().populate("createdBy");
+    return Note.find().populate('createdBy');
   }
 
-  async findById(id: string) { 
-    return Note.findById(id).populate("createdBy");
+  async findById(id: string) {
+    return Note.findById(id).populate('createdBy');
   }
 
   async update(id: string, data: any) {
@@ -24,5 +24,3 @@ class NoteRepository {
     return Note.findByIdAndDelete(id);
   }
 }
-
-export default new NoteRepository();

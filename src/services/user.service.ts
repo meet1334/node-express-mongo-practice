@@ -1,25 +1,25 @@
-import UserRepository from "../repositories/user.repository";
+import { UserRepository } from '../repositories/user.repository';
 
-class UserService {
-  async create(data:any) {
-    return UserRepository.create(data);
+export class UserService {
+  private readonly userServicerepository = new UserRepository();
+
+  async create(data: any) {
+    return this.userServicerepository.create(data);
   }
 
   async findAll() {
-    return UserRepository.find();
+    return this.userServicerepository.find();
   }
 
-  async findById(id:string) {
-    return UserRepository.findById(id);
+  async findById(id: string) {
+    return this.userServicerepository.findById(id);
   }
 
-  async update(id:string, data:any) {
-    return UserRepository.update(id, data);
+  async update(id: string, data: any) {
+    return this.userServicerepository.update(id, data);
   }
 
-  async delete(id:string) {
-    return UserRepository.delete(id);
+  async delete(id: string) {
+    return this.userServicerepository.delete(id);
   }
 }
-
-export default new UserService();
