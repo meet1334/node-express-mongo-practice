@@ -1,8 +1,8 @@
 import { config } from "dotenv";
 config();
-import app from "./src/app";
-import { PORT } from "./src/config";
-import dbConnection from "./src/db/connection";
+import app from "./app";
+import { PORT } from "./config";
+import dbConnection from "./db/connection";
 
 dbConnection();
 

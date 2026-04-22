@@ -1,8 +1,8 @@
- import { config } from 'dotenv';
+import { config } from 'dotenv';
 config();
 // config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
-const requiredEnv = ["PORT", "DATABASE_URL", "SECRET_KEY"];
+const requiredEnv = ['PORT', 'DATABASE_URL', 'SECRET_KEY', 'JWT_EXPIRY'];
 
 requiredEnv.forEach((key) => {
   if (!process.env[key]) {
@@ -10,8 +10,4 @@ requiredEnv.forEach((key) => {
   }
 });
 
-export const {
-  PORT,
-  DATABASE_URL,
-  SECRET_KEY
-} = process.env;
+export const { PORT, DATABASE_URL, SECRET_KEY, JWT_EXPIRY } = process.env;
