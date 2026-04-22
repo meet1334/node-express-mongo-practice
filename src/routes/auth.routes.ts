@@ -1,15 +1,15 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response } from 'express';
 const router = express.Router();
-import { User } from "../models/user.model";
-import HashUtil from "../utils/hashUtil";
-import JWTUtil from "../utils/jwtUtil";
-import { successMessage } from "../constants/success.constants";
-import { errorMessage } from "../constants/error.constants";
-import { HttpCode } from "../exceptions/AppError";
+import { User } from '../models/user.model';
+import HashUtil from '../utils/hashUtil';
+import JWTUtil from '../utils/jwtUtil';
+import { successMessage } from '../constants/success.constants';
+import { errorMessage } from '../constants/error.constants';
+import { HttpCode } from '../exceptions/AppError';
 
-router.post("/signup", async (req:Request, res:Response) => {
+router.post('/signup', async (req: Request, res: Response) => {
   const { email, password, first_name, last_name, username } = req.body;
-  const hashedPassword = await HashUtil.hashPassword(password)
+  const hashedPassword = await HashUtil.hashPassword(password);
   try {
     // const user = new User({
     //   email,
@@ -19,7 +19,7 @@ router.post("/signup", async (req:Request, res:Response) => {
     //   username,
     // });
 
-    const user = await User.create({ 
+    const user = await User.create({
       email,
       password: hashedPassword,
       first_name,
@@ -36,22 +36,47 @@ router.post("/signup", async (req:Request, res:Response) => {
   }
 });
 
-router.post("/login", async (req:Request, res:Response) => {
+router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.find({ email: email });
+    const user = await User.findOne({ email: email });
     if (!user) {
       return res.status(HttpCode.UNAUTHORIZED).json({ message: errorMessage.INVALID_EMAIL_PASSWORD });
     }
 
-    const isPasswordValid =  await HashUtil.comparePassword(password, user[0].password);
+    const isPasswordValid = await HashUtil.comparePassword(password, user.password);
     if (!isPasswordValid) {
       return res.status(HttpCode.UNAUTHORIZED).json({ message: errorMessage.INVALID_EMAIL_PASSWORD });
     }
 
-    const token = await JWTUtil.generateToken(user[0]);
-    return res.status(HttpCode.OK).json({ message: successMessage.LOGIN_SUCCESS, token });
+    const token = await JWTUtil.generateToken(user);
+    let resdata = { id: user._id, token };
+    return res.status(HttpCode.OK).json({ message: successMessage.LOGIN_SUCCESS, data: resdata});
+  } catch (error) {
+    return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.ERROR_CREATE_USER, error });
+  }
+});
+
+router.post('/change-password', async (req: Request, res: Response) => {
+  const { email, oldPassword, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(HttpCode.NOT_FOUND).json({ message: errorMessage.INVALID_EMAIL_PASSWORD });
+    }
+
+    const isPasswordValid = await HashUtil.comparePassword(oldPassword, user.password);
+    if (!isPasswordValid) {
+      return res.status(HttpCode.UNAUTHORIZED).json({ message: errorMessage.INVALID_EMAIL_PASSWORD });
+    }
+
+    const hashedPassoword = await HashUtil.hashPassword(newPassword);
+    user.password = hashedPassoword;
+    await user.save();
+
+    return res.status(HttpCode.OK).json({ message: successMessage.PASSWORD_SET_SUCCESS });
   } catch (error) {
     return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.ERROR_CREATE_USER, error });
   }

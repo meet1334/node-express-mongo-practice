@@ -1,6 +1,7 @@
-import { Document, model, Schema,Types } from "mongoose";
+import { Document, model, Schema, Types } from 'mongoose';
 
 export interface NoteDocument extends Document {
+  id?: typeof Schema.Types.ObjectId;
   title: string;
   content: string;
   createdBy: Types.ObjectId;
@@ -8,26 +9,34 @@ export interface NoteDocument extends Document {
 }
 
 const noteSchema = new Schema<NoteDocument>(
-    {
-        title: {
-            type: String,
-            required: true,
-        },
-        content: {
-            type: String,
-            required: true,
-        },
-        createdBy: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
-        createdAt: {
-            type: Date,
-            default: Date.now,
-        },
+  {
+    id: {
+      type: Schema.Types.ObjectId,
+      trim: true,
+      generated: true,
     },
-    { timestamps: true },
+    title: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    content: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      trim: true,
+      default: Date.now,
+    },
+  },
+  { timestamps: true },
 );
 
 export const Note = model<NoteDocument>('Note', noteSchema);

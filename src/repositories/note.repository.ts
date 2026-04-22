@@ -9,8 +9,8 @@ class NoteRepository {
     return Note.find().populate("createdBy");
   }
 
-  async findById(id: string) {
-    return Note.findById(id);
+  async findById(id: string) { 
+    return Note.findById(id).populate("createdBy");
   }
 
   async update(id: string, data: any) {
