@@ -43,6 +43,16 @@ export class UserController {
     }
   };
 
+  updateProfileImage = async (req: Request, res: Response) => {
+    try {
+      req.body.avatar = req.file?.filename;
+      const user = await this.userService.updateUserById(req.params.id as string, req.body);
+      res.status(HttpCode.OK).json({ message: successMessage.USER_UPDATE_SUCCESS, user });
+    } catch (error) {
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
+    }
+  };
+
   delete = async (req: Request, res: Response) => {
     try {
       const user = await this.userService.deleteUserById(req.params.id as string);

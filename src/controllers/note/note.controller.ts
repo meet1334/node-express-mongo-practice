@@ -43,6 +43,16 @@ export class NoteController {
     }
   };
 
+  updateVideoAttechment = async (req: Request, res: Response) => {
+    try {
+      req.body.attechments = req.file?.path;
+      const note = await this.noteService.updateNote(req.params.id as string, req.body);
+      res.status(HttpCode.OK).json({ message: successMessage.NOTE_UPDATE_SUCCESS, note });
+    } catch (error) {
+      return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.SOMETHING_WRONG, error });
+    }
+  };
+
   delete = async (req: Request, res: Response) => {
     try {
       const note = await this.noteService.deleteNoteById(req.params.id as string);

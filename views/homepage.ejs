@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .upload-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="upload-container">
+        <h2>Upload a File (PUT Request)</h2>
+        <form id="uploadForm">
+            <label for="jwtToken" style="display:block; text-align:left; font-weight:bold; margin-bottom:5px;">JWT Auth
+                Token:</label>
+            <input type="text" id="jwtToken" placeholder="Paste JWT token (Bearer...)" required
+                style="padding: 8px; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;" />
+
+            <label for="userId"
+                style="display:block; text-align:left; font-weight:bold; margin-bottom:5px; margin-top:15px;">Target
+                User ID:</label>
+            <input type="text" id="userId" placeholder="Enter User ID..." required
+                style="padding: 8px; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;" />
+
+            <br><br>
+            <input type="file" id="fileInput" name="file" required style="display:block; margin: 0 auto 20px auto;" />
+            <button type="submit">Upload File via PUT</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileField = document.getElementById('fileInput');
+            const userId = document.getElementById('userId').value.trim();
+            const token = document.getElementById('jwtToken').value.trim();
+
+            if (!fileField.files[0] || !userId || !token) {
+                alert("Please provide the token, user ID, and a file.");
+                return;
+            }
+
+            const formData = new FormData();
+            // Changed 'file' to 'video' to perfectly match uploadVideo.single('video') in your route!
+            formData.append('video', fileField.files[0]);
+            // formData.append('file', fileField.files[0]);
+            const headers = {
+                'Authorization': token.startsWith('Bearer ') ? token : `Bearer ${token}`
+            };
+
+            try {
+                const response = await fetch(`/notes/attechments/${userId}`, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Upload successful! Check logs.');
+                    console.log("Success:", data);
+                } else {
+                    alert('Upload failed: ' + (data.message || 'Unknown error'));
+                    console.error("Error Response:", data);
+                }
+            } catch (error) {
+                alert('A network error occurred.');
+                console.error("Fetch Error:", error);
+            }
+        });
+    </script>
+</body>
+
+</html>
