@@ -1,5 +1,7 @@
 import { NoteRepository } from '../repositories/note.repository';
 
+import { getPaginationOptions, formatPaginatedResponse } from '../helpers/pagination.helper';
+
 export class NoteService {
   private readonly noteServicerepository = new NoteRepository();
 
@@ -7,8 +9,13 @@ export class NoteService {
     return this.noteServicerepository.create(data);
   };
 
-  getAllNotes = async () => {
-    return this.noteServicerepository.getAll();
+  getAllNotes = async (query: any = {}) => {
+    const { page, limit, skip } = getPaginationOptions(query);
+    const [notes, total] = await Promise.all([
+      this.noteServicerepository.getAllNotesWithPagination({ skip, limit, search: query.search }),
+      this.noteServicerepository.count(),
+    ]);
+    return formatPaginatedResponse(notes, total, page, limit);
   };
 
   getNoteById = async (id: string) => {

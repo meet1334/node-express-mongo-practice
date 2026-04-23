@@ -1,5 +1,7 @@
 import { UserRepository } from '../repositories/user.repository';
 
+import { getPaginationOptions, formatPaginatedResponse } from '../helpers/pagination.helper';
+
 export class UserService {
   private readonly userServicerepository = new UserRepository();
 
@@ -7,8 +9,11 @@ export class UserService {
     return this.userServicerepository.create(data);
   };
 
-  getAllUsers = async () => {
-    return this.userServicerepository.findAll();
+  getAllUsers = async (query: any) => {
+    const { page, limit, skip } = getPaginationOptions(query);
+    const users = await this.userServicerepository.findAllWithPagination({ skip, limit, search: query.search });
+    const total = await this.userServicerepository.count();
+    return formatPaginatedResponse(users, total, page, limit);
   };
 
   getUserById = async (id: string) => {
