@@ -13,6 +13,7 @@ export class UserService {
     const { page, limit, skip } = getPaginationOptions(query);
     const users = await this.userServicerepository.findAllWithPagination({ skip, limit, search: query.search });
     const total = await this.userServicerepository.count();
+    
     return formatPaginatedResponse(users, total, page, limit);
   };
 
