@@ -6,8 +6,10 @@ import JWTUtil from '../utils/jwtUtil';
 import { successMessage } from '../constants/success.constants';
 import { errorMessage } from '../constants/error.constants';
 import { HttpCode } from '../exceptions/AppError';
+import { createUserSchema } from '../validations/user.validation';
+import { validationMiddleware } from '../middlewares/validation.middleware';
 
-router.post('/signup', async (req: Request, res: Response) => {
+router.post('/signup', validationMiddleware(createUserSchema), async (req: Request, res: Response) => {
   const { email, password, first_name, last_name, username } = req.body;
   const hashedPassword = await HashUtil.hashPassword(password);
   try {
@@ -52,7 +54,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
     const token = await JWTUtil.generateToken(user);
     let resdata = { id: user._id, token };
-    return res.status(HttpCode.OK).json({ message: successMessage.LOGIN_SUCCESS, data: resdata});
+    return res.status(HttpCode.OK).json({ message: successMessage.LOGIN_SUCCESS, data: resdata });
   } catch (error) {
     return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({ message: errorMessage.ERROR_CREATE_USER, error });
   }

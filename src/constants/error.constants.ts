@@ -5,5 +5,6 @@ export const errorMessage = {
   ERROR_CREATE_USER: 'Error creating user',
   INVALID_EMAIL_PASSWORD: "Invalid email or password",
   INVALID_IMAGE_FORMAT: "Invalid image format",
-  INVALID_VIDEO_FORMAT:"Invalid video format"
+  INVALID_VIDEO_FORMAT:"Invalid video format",
+  VALIDATION_ERROR:"Validation error"
 };
