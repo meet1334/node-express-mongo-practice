@@ -1,0 +1,39 @@
+import mongoose from "mongoose";
+import { DATABASE_URL } from "../config";
+
+const dbConnection = async () => {
+  // check if connection is already connected then return
+  if (mongoose.connection.readyState === 1) {
+    return;
+  }
+  const databaseURL = DATABASE_URL
+    ? DATABASE_URL
+    : "mongodb://localhost:27017/notes";
+
+  try {
+    await mongoose
+      .connect(databaseURL, {
+        autoCreate: true,
+      })
+      .then(() => {
+        console.log("Database connected successfully");
+      });
+    mongoose.connection.on("connected", () => {
+      //console.log('Mongoose default connection open to ' + databaseURL)
+      console.log("Database connected successfully");
+    });
+
+    mongoose.connection.on("error", (err) => {
+      console.log("Mongoose default connection error: " + err);
+    });
+
+    mongoose.connection.on("disconnected", () => {
+      console.log("Mongoose default connection disconnected");
+    });
+  } catch (err: any) {
+    console.error(err.message);
+    process.exit(1);
+  }
+};
+
+export default dbConnection;
